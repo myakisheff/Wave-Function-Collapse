@@ -1,10 +1,9 @@
 package main.kotlin.com.wavecollapse.business
+
+import java.util.UUID
+
 class Tile (
-    val id : Int,
+    val id : UUID,
     val tile : Any,
-    val leftConnections : MutableList<Int>,
-    val rightConnections : MutableList<Int>,
-    val topConnections : MutableList<Int>,
-    val bottomConnections : MutableList<Int>,
 ){
 }
