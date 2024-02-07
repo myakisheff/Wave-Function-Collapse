@@ -1,5 +1,5 @@
 package main.kotlin.com.wavecollapse
 
 fun main() {
-    println("Hello World!")
+    println("There is Wave Function Collapse implementation in Console!")
 }
