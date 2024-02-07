@@ -1,12 +1,11 @@
 package main.kotlin.com.wavecollapse.presentation.controller
 
-import main.kotlin.com.wavecollapse.service.ImageService
+import main.kotlin.com.wavecollapse.service.TileService
 
 class TileController(
-    private val imageService: ImageService
+    private val tileService: TileService
 ) {
-    fun defaultImage(){
-        val img = imageService.default()
-
+    fun addDefaultTiles(){
+        val img = tileService.default()
     }
 }
