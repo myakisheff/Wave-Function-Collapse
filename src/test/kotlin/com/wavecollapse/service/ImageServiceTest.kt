@@ -1,6 +1,7 @@
 package test.kotlin.com.wavecollapse.service
 
 import com.wavecollapse.business.Image
+import com.wavecollapse.business.Side
 import com.wavecollapse.business.Tile
 import com.wavecollapse.service.ImageService
 import org.junit.jupiter.api.Assertions
@@ -26,7 +27,37 @@ class ImageServiceTest {
         val img = testImage()
 
         img.tiles.forEach {
-            //img.addConnection(it, )
+            img.addConnection(
+                it.id,
+                listOf(
+                    UUID.fromString("bd2291d5-bfbc-48b1-bb84-576a016bd259"),
+                    UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe")
+                ),
+                Side.TOP)
+
+            img.addConnection(
+                it.id,
+                listOf(
+                    UUID.fromString("bd2291d5-bfbc-48b1-bb84-576a016bd259"),
+                    UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe")
+                ),
+                Side.RIGHT)
+
+            img.addConnection(
+                it.id,
+                listOf(
+                    UUID.fromString("bd2291d5-bfbc-48b1-bb84-576a016bd259"),
+                    UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe")
+                ),
+                Side.BOTTOM)
+
+            img.addConnection(
+                it.id,
+                listOf(
+                    UUID.fromString("bd2291d5-bfbc-48b1-bb84-576a016bd259"),
+                    UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe")
+                ),
+                Side.LEFT)
         }
 
         assertTrue(img.correct().first)
@@ -35,25 +66,20 @@ class ImageServiceTest {
     private fun testImage() : Image
     {
         val tileOne = Tile(
-            id = UUID.randomUUID(),
+            id = UUID.fromString("bd2291d5-bfbc-48b1-bb84-576a016bd259"),
             tile = "|",
             canGrow = true,
         )
         val tileTwo = Tile(
-            id = UUID.randomUUID(),
+            id = UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe"),
             tile = " ",
-            canGrow = true,
-        )
-        val tileThree = Tile(
-            id = UUID.randomUUID(),
-            tile = "_",
             canGrow = true,
         )
 
         return Image(
             id = UUID.randomUUID(),
             tag = "Test",
-            tiles = mutableListOf(tileOne, tileTwo, tileThree),
+            tiles = mutableListOf(tileOne, tileTwo),
             height = 4,
             width = 4
         )
