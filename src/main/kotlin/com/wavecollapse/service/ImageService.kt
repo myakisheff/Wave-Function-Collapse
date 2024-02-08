@@ -2,11 +2,11 @@ package main.kotlin.com.wavecollapse.service
 
 import main.kotlin.com.wavecollapse.business.Image
 import main.kotlin.com.wavecollapse.business.Tile
-import main.kotlin.com.wavecollapse.persistence.repository.ListImageRepository
+import main.kotlin.com.wavecollapse.persistence.repository.ImageRepository
 import java.util.*
 
 class ImageService(
-    private val repository: ListImageRepository
+    private val repository: ImageRepository
 ) {
     fun default(tiles : MutableList<Tile>): Image {
         val img = Image(
@@ -19,4 +19,10 @@ class ImageService(
             .save(img)
             .let{img}
     }
+
+    fun get(id: UUID): Image? =
+        repository.findById(id)
+
+    fun createNewTile(img: Image): Image =
+        repository.save(img)
 }
