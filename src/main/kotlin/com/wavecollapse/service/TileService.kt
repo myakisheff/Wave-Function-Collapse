@@ -1,51 +1,46 @@
-package main.kotlin.com.wavecollapse.service
+package com.wavecollapse.service
 
-import main.kotlin.com.wavecollapse.business.Tile
-import main.kotlin.com.wavecollapse.persistence.repository.TileRepository
+import com.wavecollapse.business.Tile
+import com.wavecollapse.persistence.repository.TileRepository
 import java.util.*
 
 class TileService(
     private val repository: TileRepository
 ) {
-    fun default() {
+    fun default(): MutableIterable<UUID> {
         var tile : Tile
-        for(i in 1..4)
+        val ids = mutableListOf<UUID>()
+        for(i in 1..6)
         {
             var id = UUID.randomUUID()
             while(repository.existsById(id))
                 id = UUID.randomUUID()
 
-            val view = Array(3) { Array(3) { " " } }
-            when(i)
+            val view = when(i)
             {
-                1 -> { // vertical
-                    view[0][1] = "*"
-                    view[1][1] = "*"
-                    view[2][1] = "*"
-                }
-                2 -> { // horizontal
-                    view[1][0] = "*"
-                    view[1][1] = "*"
-                    view[1][2] = "*"
-                }
-                3 -> { // cross
-                    view[0][1] = "*"
-                    view[1][1] = "*"
-                    view[2][1] = "*"
-                    view[1][0] = "*"
-                    view[1][2] = "*"
-                }
+                1 -> "╠"
+                2 -> "╩"
+                3 -> "╗"
+                4 -> "╚"
+                5 -> "╔"
+                6 -> "╝"
+                else -> " "
             }
             tile = Tile(
                 id,
                 view,
+                true,
             )
             repository.save(tile)
+            ids.add(tile.id)
         }
+        return ids
     }
 
     fun get(id: UUID): Tile? =
         repository.findById(id)
 
     fun createNewTile(tile: Tile): Tile = repository.save(tile)
+    fun getAllById(ids: MutableIterable<UUID>): MutableIterable<Tile> =
+        repository.findAllById(ids)
 }
