@@ -1,4 +1,9 @@
-package main.kotlin.com.wavecollapse.presentation.model
+package com.wavecollapse.presentation.model
 
-class ImageViewModel {
+import com.wavecollapse.business.Image
+
+class ImageViewModel(
+    private val image: Image
+) {
+    fun size() = "Size:\nHeight: ${image.height}\nWidth: ${image.width}"
 }
