@@ -1,4 +1,4 @@
-package main.kotlin.com.wavecollapse.business
+package com.wavecollapse.business
 
 enum class Side {
     TOP,
