@@ -12,9 +12,6 @@ class TileController(
     fun getTiles(ids: MutableIterable<UUID>) : MutableIterable<Tile> = tileService.getAllById(ids)
     fun addDefaultTiles(): MutableIterable<UUID>{
         val default = tileService.default()
-        default.forEach {
-            renderTileView(tile = TileViewModel(tileService.get(it)))
-        }
         return default
     }
 }
