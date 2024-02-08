@@ -27,30 +27,109 @@ class Image(
             line.forEach { cell ->
                 tiles.forEach {
                     cell.availableTilesIds.add(it.id)
+                    cell.availableTilesIds.remove(UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341"))
                 }
             }
         }
     }
 
     fun getImage() = createdImage
-    
-    fun createImage() : Boolean {
+
+    fun createImage() {
         if(!correct().first)
-            return false
+            return
 
+        val widthPos = (0..<width).random()
+        val heightPos = (0..<height).random()
 
+        println("Start position: $heightPos, $widthPos")
 
+        setTilesRecursive(widthPos, heightPos)
 
-        for(i in 0..<height)
-        {
-            for(j in 0..<width)
-            {
-
+        createdImage.forEach { line ->
+            line.forEach { cell ->
+                if (cell.tileID == null) return
             }
         }
-
-        return true
     }
+    private fun setTilesRecursive(widthPos: Int, heightPos: Int){
+        if(widthPos < 0 || widthPos >= width || heightPos < 0 || heightPos >= height)
+            return
+
+        if(createdImage[heightPos][widthPos].tileID != null)
+            return
+
+        createdImage[heightPos][widthPos].tileID =
+            try{
+                createdImage[heightPos][widthPos].availableTilesIds.random()
+            } catch (e: NoSuchElementException)
+            {
+                UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341")
+            }
+
+        buildList {
+            getImage().forEach { cell ->
+                var line = ""
+                cell.forEach {
+                    line += tiles.find {
+                            tile -> tile.id == it.tileID
+                    }?.tile
+                }
+                add(line)
+            }
+        }.forEach{
+            println(it)
+        }
+
+        // remove not available ids for near cells
+        val idsToRemove = mutableListOf<UUID>()
+
+        if(heightPos + 1 < height) {
+            createdImage[heightPos + 1][widthPos].availableTilesIds.forEach {
+                if (connections[createdImage[heightPos][widthPos].tileID]?.get(Side.BOTTOM)?.contains(it) == false) {
+                    idsToRemove.add(it)
+                }
+            }
+            createdImage[heightPos + 1][widthPos].availableTilesIds.removeAll(idsToRemove.toSet())
+            idsToRemove.clear()
+        }
+
+        if(widthPos + 1 < width){
+            createdImage[heightPos][widthPos + 1].availableTilesIds.forEach {
+                if (connections[createdImage[heightPos][widthPos].tileID]?.get(Side.RIGHT)?.contains(it) == false) {
+                    idsToRemove.add(it)
+                }
+            }
+            createdImage[heightPos][widthPos + 1].availableTilesIds.removeAll(idsToRemove.toSet())
+            idsToRemove.clear()
+        }
+
+        if(heightPos - 1 >= 0){
+            createdImage[heightPos - 1][widthPos].availableTilesIds.forEach {
+                if (connections[createdImage[heightPos][widthPos].tileID]?.get(Side.TOP)?.contains(it) == false) {
+                    idsToRemove.add(it)
+                }
+            }
+            createdImage[heightPos - 1][widthPos].availableTilesIds.removeAll(idsToRemove.toSet())
+            idsToRemove.clear()
+        }
+
+        if(widthPos - 1 >= 0){
+            createdImage[heightPos][widthPos - 1].availableTilesIds.forEach {
+                if (connections[createdImage[heightPos][widthPos].tileID]?.get(Side.LEFT)?.contains(it) == false) {
+                    idsToRemove.add(it)
+                }
+            }
+            createdImage[heightPos][widthPos - 1].availableTilesIds.removeAll(idsToRemove.toSet())
+            idsToRemove.clear()
+        }
+
+        setTilesRecursive(widthPos + 1, heightPos)
+        setTilesRecursive(widthPos, heightPos + 1)
+        setTilesRecursive(widthPos - 1, heightPos)
+        setTilesRecursive(widthPos, heightPos - 1)
+    }
+
     fun correct(): Message {
         if(!correctConnectionsCount())
             return Pair(false, "Not enough connections of image $id")
@@ -70,10 +149,14 @@ class Image(
     private fun correctConnections() : Boolean {
         return true
     }
-    fun addConnection(ownTile: Tile, attachedTile: Tile, side: Side){
-        if(connections.containsKey(ownTile.id))
-            connections[ownTile.id]?.get(side)?.add(attachedTile.id)
-        else connections[ownTile.id] = mutableMapOf(Pair(side, mutableListOf(attachedTile.id)))
+    fun addConnection(ownTileID: UUID, attachedTileIDs: List<UUID>, side: Side){
+        attachedTileIDs.forEach {
+            if(connections.containsKey(ownTileID))
+                if(connections[ownTileID]?.containsKey(side) == true)
+                    connections[ownTileID]?.get(side)?.add(it)
+                else connections[ownTileID]?.set(side, mutableListOf(it))
+            else connections[ownTileID] = mutableMapOf(Pair(side, mutableListOf(it)))
+        }
     }
 }
 typealias Message = Pair<Boolean, String>
