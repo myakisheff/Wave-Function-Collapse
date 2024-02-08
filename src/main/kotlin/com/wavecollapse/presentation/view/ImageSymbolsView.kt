@@ -1,4 +1,8 @@
-package main.kotlin.com.wavecollapse.presentation.view
+package com.wavecollapse.presentation.view
 
-class ImageSymbolsView {
+import com.wavecollapse.presentation.model.ImageViewModel
+
+fun renderImageView(image: ImageViewModel)
+{
+    println(image.size())
 }

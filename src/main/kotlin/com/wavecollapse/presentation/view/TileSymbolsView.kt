@@ -1,4 +1,10 @@
-package main.kotlin.com.wavecollapse.presentation.view
+package com.wavecollapse.presentation.view
 
-class TileSymbolsView {
+import com.wavecollapse.presentation.model.TileViewModel
+
+fun renderTileView(tile: TileViewModel)
+{
+    tile.strings().forEach{
+        println(it)
+    }
 }
