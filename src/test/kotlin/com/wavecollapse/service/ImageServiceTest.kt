@@ -1,9 +1,8 @@
-package test.kotlin.com.wavecollapse.service
+package com.wavecollapse.service
 
 import com.wavecollapse.business.Image
 import com.wavecollapse.business.Side
 import com.wavecollapse.business.Tile
-import com.wavecollapse.service.ImageService
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -68,12 +67,10 @@ class ImageServiceTest {
         val tileOne = Tile(
             id = UUID.fromString("bd2291d5-bfbc-48b1-bb84-576a016bd259"),
             tile = "|",
-            canGrow = true,
         )
         val tileTwo = Tile(
             id = UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe"),
             tile = " ",
-            canGrow = true,
         )
 
         return Image(
