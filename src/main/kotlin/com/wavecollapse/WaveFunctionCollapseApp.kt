@@ -16,21 +16,22 @@ fun main() {
     // We need it because there fake repositories (not a DB)
     val imagesRep = ListImageRepository()
     val tilesRep = ListTileRepository()
+    val imageController = ImageController(ImageService(imagesRep))
 
-    println("Example: ")
-    println("Tiles: ")
     val tileIds = TileController(TileService(tilesRep)).addDefaultTiles()
     val tiles = TileController(TileService(tilesRep)).getTiles(tileIds)
 
     // create example image
-    val res = ImageController(ImageService(imagesRep))
+    val res = imageController
         .create(ImageService(imagesRep).default(tiles))
-
-    println()
-    println("Result: ")
 
     if(res.first) kLogger.info { res.second }
     else kLogger.error { res.second }
+
+    println()
+
+    imageController
+        .get(imageController.getByTag("Example").id.toString())
 
     print("╠")
     print("╩")
