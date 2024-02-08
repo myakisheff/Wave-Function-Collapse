@@ -1,7 +1,7 @@
 package test.kotlin.com.wavecollapse.fakeRepository
 
-import main.kotlin.com.wavecollapse.business.Image
-import main.kotlin.com.wavecollapse.persistence.repository.ImageRepository
+import com.wavecollapse.business.Image
+import com.wavecollapse.persistence.repository.ImageRepository
 import java.util.*
 
 class InMemoryImageRepository : ImageRepository {

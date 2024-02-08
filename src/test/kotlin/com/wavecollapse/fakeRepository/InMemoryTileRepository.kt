@@ -1,7 +1,7 @@
 package test.kotlin.com.wavecollapse.fakeRepository
 
-import main.kotlin.com.wavecollapse.business.Tile
-import main.kotlin.com.wavecollapse.persistence.repository.TileRepository
+import com.wavecollapse.business.Tile
+import com.wavecollapse.persistence.repository.TileRepository
 import java.util.*
 
 class InMemoryTileRepository : TileRepository {
