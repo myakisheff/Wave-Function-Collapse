@@ -24,8 +24,14 @@ class ImageController(
         return true
     }
 
-    fun getByTag(tag: String): Image{
-        return imageService.getByTag(tag)
+    fun getByTag(tag: String): Image?{
+        val img = try {
+            imageService.getByTag(tag)
+        } catch (e: NoSuchElementException)
+        {
+            return null
+        }
+        return img
     }
 
     fun create(image: Image): Pair<Boolean, String>{
