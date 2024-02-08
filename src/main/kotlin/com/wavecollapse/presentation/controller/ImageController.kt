@@ -23,6 +23,11 @@ class ImageController(
 
         return true
     }
+
+    fun getByTag(tag: String): Image{
+        return imageService.getByTag(tag)
+    }
+
     fun create(image: Image): Pair<Boolean, String>{
         val createdImage = imageService.createNewImage(image)
         val message = createdImage.correct()
