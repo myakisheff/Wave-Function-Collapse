@@ -52,6 +52,7 @@ class ImageServiceTest {
 
         return Image(
             id = UUID.randomUUID(),
+            tag = "Test",
             tiles = mutableListOf(tileOne, tileTwo, tileThree),
             height = 4,
             width = 4
