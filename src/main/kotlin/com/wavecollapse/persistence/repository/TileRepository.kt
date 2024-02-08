@@ -1,6 +1,6 @@
-package main.kotlin.com.wavecollapse.persistence.repository
+package com.wavecollapse.persistence.repository
 
-import main.kotlin.com.wavecollapse.business.Tile
+import com.wavecollapse.business.Tile
 import java.util.*
 
 interface TileRepository {
