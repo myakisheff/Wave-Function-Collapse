@@ -42,8 +42,6 @@ class Image(
         val widthPos = (0..<width).random()
         val heightPos = (0..<height).random()
 
-        println("Start position: $heightPos, $widthPos")
-
         setTilesRecursive(widthPos, heightPos)
 
         createdImage.forEach { line ->
@@ -66,20 +64,6 @@ class Image(
             {
                 UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341")
             }
-
-        buildList {
-            getImage().forEach { cell ->
-                var line = ""
-                cell.forEach {
-                    line += tiles.find {
-                            tile -> tile.id == it.tileID
-                    }?.tile
-                }
-                add(line)
-            }
-        }.forEach{
-            println(it)
-        }
 
         // remove not available ids for near cells
         val idsToRemove = mutableListOf<UUID>()
