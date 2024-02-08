@@ -37,7 +37,6 @@ class TileService(
             tile = Tile(
                 id,
                 view,
-                true,
             )
             repository.save(tile)
         }

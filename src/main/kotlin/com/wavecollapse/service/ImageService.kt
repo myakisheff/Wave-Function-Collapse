@@ -4,8 +4,6 @@ import com.wavecollapse.business.Image
 import com.wavecollapse.business.Side
 import com.wavecollapse.business.Tile
 import com.wavecollapse.persistence.repository.ImageRepository
-import com.wavecollapse.presentation.model.ImageViewModel
-import com.wavecollapse.presentation.view.renderImageView
 import java.util.*
 
 class ImageService(

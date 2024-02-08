@@ -1,8 +1,6 @@
 package com.wavecollapse.presentation.controller
 
 import com.wavecollapse.business.Tile
-import com.wavecollapse.presentation.model.TileViewModel
-import com.wavecollapse.presentation.view.renderTileView
 import com.wavecollapse.service.TileService
 import java.util.*
 
