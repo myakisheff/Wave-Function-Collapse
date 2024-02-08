@@ -31,27 +31,7 @@ fun main() {
     println()
 
     imageController
-        .get(imageController.getByTag("Example").id.toString())
-
-    print("╠")
-    print("╩")
-    println("╗")
-
-    print("╠")
-    print("╗")
-    println("╠")
-
-    print("╚")
-    print("╝")
-    println("╚")
-
-    print("╔")
-    print("╗")
-    println(" ")
-
-    print(" ")
-    print("╠")
-    println("╗")
+        .get(imageController.getByTag("Example")?.id.toString())
 
     println("Generate again?")
 }

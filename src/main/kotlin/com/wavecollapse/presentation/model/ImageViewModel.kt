@@ -15,7 +15,9 @@ class ImageViewModel(
         image.getImage().forEach { cell ->
             var line = ""
             cell.forEach {
-                line += it.tile ?: return listOf("Some tiles empty. Check connections")
+                line += image.tiles.find {
+                    tile -> tile.id == it.tileID
+                }?.tile ?: return listOf("Some tiles empty. Check connections")
             }
             add(line)
         }
