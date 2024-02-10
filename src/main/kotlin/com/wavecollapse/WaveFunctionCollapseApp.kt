@@ -8,7 +8,7 @@ import com.wavecollapse.service.ImageService
 import com.wavecollapse.service.TileService
 import mu.KotlinLogging
 
-private val kLogger = KotlinLogging.logger {}
+val kLogger = KotlinLogging.logger {}
 
 fun main() {
     println("There is Wave Function Collapse implementation in Console!\n")
