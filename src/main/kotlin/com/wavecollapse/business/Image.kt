@@ -1,5 +1,6 @@
 package com.wavecollapse.business
 
+import com.wavecollapse.kLogger
 import java.util.UUID
 
 class Image(
@@ -13,21 +14,26 @@ class Image(
     private val createdImage : MutableList<MutableList<ImageCell>> = mutableListOf()
 
     init {
+        initEmptyImage()
+    }
+
+    private fun initEmptyImage()
+    {
         for(i in 0..<height)
         {
-            createdImage.add(mutableListOf())
+            createdImage.add(mutableListOf()) // add a row
 
             for(j in 0..<width)
             {
-                createdImage[i].add(ImageCell())
+                createdImage[i].add(ImageCell()) // add a cell in a row
             }
         }
 
+        // add all tiles to available tiles for all cells
         createdImage.forEach { line ->
             line.forEach { cell ->
                 tiles.forEach {
                     cell.availableTilesIds.add(it.id)
-                    cell.availableTilesIds.remove(UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341"))
                 }
             }
         }
@@ -39,13 +45,16 @@ class Image(
         if(!correct().first)
             return
 
+        // set random position for first tile
         val widthPos = (0..<width).random()
         val heightPos = (0..<height).random()
 
         setTilesRecursive(widthPos, heightPos)
 
+        // check for not filled tiles
         createdImage.forEach { line ->
             line.forEach { cell ->
+                kLogger.info { "Tile $heightPos, $widthPos not filled" }
                 if (cell.tileID == null) return
             }
         }
@@ -62,7 +71,11 @@ class Image(
                 createdImage[heightPos][widthPos].availableTilesIds.random()
             } catch (e: NoSuchElementException)
             {
+                kLogger.info { "No suitable tile for $heightPos, $widthPos" }
                 UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341")
+//                initImage()
+//                createImage()
+//                return
             }
 
         // remove not available ids for near cells
