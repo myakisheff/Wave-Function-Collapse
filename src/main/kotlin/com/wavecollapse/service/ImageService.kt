@@ -294,6 +294,8 @@ class ImageService(
             ),
             Side.LEFT)
 
+        img.blankTileId = UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341")
+
         img.createImage()
 
         return repository
