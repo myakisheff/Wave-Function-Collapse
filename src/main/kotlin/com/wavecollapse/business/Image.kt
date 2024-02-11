@@ -12,13 +12,13 @@ class Image(
 ) {
     private val connections: MutableMap<UUID, MutableMap<Side, MutableList<UUID>>> = mutableMapOf()
     private val createdImage : MutableList<MutableList<ImageCell>> = mutableListOf()
-
-    init {
-        initEmptyImage()
-    }
+    private val usedCells : MutableList<UsedCells> = mutableListOf()
+    var blankTileId : UUID? = null
 
     private fun initEmptyImage()
     {
+        createdImage.clear()
+
         for(i in 0..<height)
         {
             createdImage.add(mutableListOf()) // add a row
@@ -45,86 +45,90 @@ class Image(
         if(!correct().first)
             return
 
-        // set random position for first tile
+        // set random position for the first tile
         val widthPos = (0..<width).random()
         val heightPos = (0..<height).random()
 
-        setTilesRecursive(widthPos, heightPos)
+        kLogger.info { "Starts generating from $heightPos, $widthPos" }
 
+        initEmptyImage()
+        setTiles(widthPos, heightPos)
+
+        var lineInt = 0
+        var colInt = 0
         // check for not filled tiles
         createdImage.forEach { line ->
             line.forEach { cell ->
-                kLogger.info { "Tile $heightPos, $widthPos not filled" }
-                if (cell.tileID == null) return
+                if (cell.tileID == null) {
+                    kLogger.warn { "Tile ${lineInt}, ${colInt++} not filled" }
+                }
             }
+            lineInt++
+            colInt = 0
         }
     }
-    private fun setTilesRecursive(widthPos: Int, heightPos: Int){
+
+    private fun setTiles(widthPos: Int, heightPos: Int)
+    {
+        var isPass = true
+
         if(widthPos < 0 || widthPos >= width || heightPos < 0 || heightPos >= height)
-            return
+            isPass = false
 
-        if(createdImage[heightPos][widthPos].tileID != null)
-            return
+        if(isPass && createdImage[heightPos][widthPos].tileID != null)
+            isPass = false
 
+        if(!isPass)
+        {
+            if(usedCells.size > 0) {
+                val deletedCell = usedCells.removeAt(0)
+                setTiles(deletedCell.widthPos, deletedCell.heightPos)
+            }
+            return
+        }
+
+        // set a random tile
         createdImage[heightPos][widthPos].tileID =
             try{
                 createdImage[heightPos][widthPos].availableTilesIds.random()
             } catch (e: NoSuchElementException)
             {
                 kLogger.info { "No suitable tile for $heightPos, $widthPos" }
-                UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341")
-//                initImage()
-//                createImage()
-//                return
+                blankTileId ?: return
             }
 
-        // remove not available ids for near cells
-        val idsToRemove = mutableListOf<UUID>()
+        val idsToRemove = mutableSetOf<UUID>()
 
-        if(heightPos + 1 < height) {
-            createdImage[heightPos + 1][widthPos].availableTilesIds.forEach {
-                if (connections[createdImage[heightPos][widthPos].tileID]?.get(Side.BOTTOM)?.contains(it) == false) {
-                    idsToRemove.add(it)
+        // reduce entropy of near cells
+        for(i in (0..3))
+        {
+            var h = 0
+            var w = 0
+            var side = Side.BOTTOM
+            when(i)
+            {
+                0 -> {h = 1; w = 0; side = Side.BOTTOM}
+                1 -> {h = -1; w = 0; side = Side.TOP}
+                2 -> {h = 0; w = 1; side = Side.RIGHT}
+                3 -> {h = 0; w = -1; side = Side.LEFT}
+            }
+            try {
+                createdImage[heightPos + h][widthPos + w].availableTilesIds.forEach {
+                    if (connections[createdImage[heightPos][widthPos].tileID]?.get(side)?.contains(it) == false) {
+                        idsToRemove.add(it)
+                    }
                 }
-            }
-            createdImage[heightPos + 1][widthPos].availableTilesIds.removeAll(idsToRemove.toSet())
-            idsToRemove.clear()
+                createdImage[heightPos + h][widthPos + w].availableTilesIds.removeAll(idsToRemove)
+                idsToRemove.clear()
+                usedCells.add(UsedCells(widthPos + w,heightPos + h,
+                    createdImage[heightPos + h][widthPos + w].availableTilesIds.size))
+            } catch (_: IndexOutOfBoundsException){}
         }
 
-        if(widthPos + 1 < width){
-            createdImage[heightPos][widthPos + 1].availableTilesIds.forEach {
-                if (connections[createdImage[heightPos][widthPos].tileID]?.get(Side.RIGHT)?.contains(it) == false) {
-                    idsToRemove.add(it)
-                }
-            }
-            createdImage[heightPos][widthPos + 1].availableTilesIds.removeAll(idsToRemove.toSet())
-            idsToRemove.clear()
-        }
-
-        if(heightPos - 1 >= 0){
-            createdImage[heightPos - 1][widthPos].availableTilesIds.forEach {
-                if (connections[createdImage[heightPos][widthPos].tileID]?.get(Side.TOP)?.contains(it) == false) {
-                    idsToRemove.add(it)
-                }
-            }
-            createdImage[heightPos - 1][widthPos].availableTilesIds.removeAll(idsToRemove.toSet())
-            idsToRemove.clear()
-        }
-
-        if(widthPos - 1 >= 0){
-            createdImage[heightPos][widthPos - 1].availableTilesIds.forEach {
-                if (connections[createdImage[heightPos][widthPos].tileID]?.get(Side.LEFT)?.contains(it) == false) {
-                    idsToRemove.add(it)
-                }
-            }
-            createdImage[heightPos][widthPos - 1].availableTilesIds.removeAll(idsToRemove.toSet())
-            idsToRemove.clear()
-        }
-
-        setTilesRecursive(widthPos + 1, heightPos)
-        setTilesRecursive(widthPos, heightPos + 1)
-        setTilesRecursive(widthPos - 1, heightPos)
-        setTilesRecursive(widthPos, heightPos - 1)
+        // go to cell with the lowest count of possible tiles
+        usedCells.sortedBy { it.count }
+        val deletedCell = usedCells.removeAt(0)
+        setTiles(deletedCell.widthPos, deletedCell.heightPos)
     }
 
     fun correct(): Message {
@@ -147,6 +151,8 @@ class Image(
         return true
     }
     fun addConnection(ownTileID: UUID, attachedTileIDs: List<UUID>, side: Side){
+        // tiles.first { it.id == ownTileID }.addConnection(side, attachedTileIDs) // if every tile have connections
+
         attachedTileIDs.forEach {
             if(connections.containsKey(ownTileID))
                 if(connections[ownTileID]?.containsKey(side) == true)
