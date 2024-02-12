@@ -15,8 +15,7 @@ class Image(
     private val usedCells : MutableList<UsedCells> = mutableListOf()
     var blankTileId : UUID? = null
 
-    private fun initEmptyImage()
-    {
+    private fun initEmptyImage(){
         createdImage.clear()
 
         for(i in 0..<height)
@@ -68,8 +67,7 @@ class Image(
         }
     }
 
-    private fun setTiles(widthPos: Int, heightPos: Int)
-    {
+    private tailrec fun setTiles(widthPos: Int, heightPos: Int){
         var isPass = true
 
         if(widthPos < 0 || widthPos >= width || heightPos < 0 || heightPos >= height)
