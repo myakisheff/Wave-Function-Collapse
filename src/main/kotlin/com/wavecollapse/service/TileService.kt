@@ -16,9 +16,8 @@ class TileService(
             UUID.fromString("d07e4dad-71de-4b48-add8-c91de7268d07"),    // ╚
             UUID.fromString("270760f7-4a93-4984-90c8-6d7bfcd7cb90"),    // ╔
             UUID.fromString("17a55163-8217-492f-a5ed-ee1ef79f0abf"),    // ╝
-            UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341")     //
         )
-        for(i in 0..6)
+        for(i in 0..5)
         {
             val id = ids[i]
 //            while(repository.existsById(id))

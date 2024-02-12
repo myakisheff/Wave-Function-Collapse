@@ -9,15 +9,14 @@ import java.util.*
 class ImageService(
     private val repository: ImageRepository
 ) {
-    fun default(tiles : MutableIterable<Tile>): Image {
+    fun default(tiles : MutableIterable<Tile>, i : Int): Image {
         val img = Image(
             UUID.randomUUID(),
-            "Example",
+            "Example$i",
             tiles.toMutableList(),
             15,
             15
         )
-
         // Add connections
         // ╠
         img.addConnection(
@@ -238,59 +237,6 @@ class ImageService(
                 UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe"),
                 UUID.fromString("d07e4dad-71de-4b48-add8-c91de7268d07"),
                 UUID.fromString("270760f7-4a93-4984-90c8-6d7bfcd7cb90")
-            ),
-            Side.LEFT)
-
-        //
-        img.addConnection(
-            UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341"),
-            listOf(
-                UUID.fromString("bd2291d5-bfbc-48b1-bb84-576a016bd259"),
-                UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe"),
-                UUID.fromString("f5f763c4-3cf1-4e04-a2ed-78fb9c8927d7"),
-                UUID.fromString("d07e4dad-71de-4b48-add8-c91de7268d07"),
-                UUID.fromString("270760f7-4a93-4984-90c8-6d7bfcd7cb90"),
-                UUID.fromString("17a55163-8217-492f-a5ed-ee1ef79f0abf"),
-                UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341")
-            ),
-            Side.TOP)
-
-        img.addConnection(
-            UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341"),
-            listOf(
-                UUID.fromString("bd2291d5-bfbc-48b1-bb84-576a016bd259"),
-                UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe"),
-                UUID.fromString("f5f763c4-3cf1-4e04-a2ed-78fb9c8927d7"),
-                UUID.fromString("d07e4dad-71de-4b48-add8-c91de7268d07"),
-                UUID.fromString("270760f7-4a93-4984-90c8-6d7bfcd7cb90"),
-                UUID.fromString("17a55163-8217-492f-a5ed-ee1ef79f0abf"),
-                UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341")
-            ),
-            Side.RIGHT)
-
-        img.addConnection(
-            UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341"),
-            listOf(
-                UUID.fromString("bd2291d5-bfbc-48b1-bb84-576a016bd259"),
-                UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe"),
-                UUID.fromString("f5f763c4-3cf1-4e04-a2ed-78fb9c8927d7"),
-                UUID.fromString("d07e4dad-71de-4b48-add8-c91de7268d07"),
-                UUID.fromString("270760f7-4a93-4984-90c8-6d7bfcd7cb90"),
-                UUID.fromString("17a55163-8217-492f-a5ed-ee1ef79f0abf"),
-                UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341")
-            ),
-            Side.BOTTOM)
-
-        img.addConnection(
-            UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341"),
-            listOf(
-                UUID.fromString("bd2291d5-bfbc-48b1-bb84-576a016bd259"),
-                UUID.fromString("0754299d-4c89-414f-840d-50d61ad1eefe"),
-                UUID.fromString("f5f763c4-3cf1-4e04-a2ed-78fb9c8927d7"),
-                UUID.fromString("d07e4dad-71de-4b48-add8-c91de7268d07"),
-                UUID.fromString("270760f7-4a93-4984-90c8-6d7bfcd7cb90"),
-                UUID.fromString("17a55163-8217-492f-a5ed-ee1ef79f0abf"),
-                UUID.fromString("acc6d4c8-b0cb-49fd-ae20-7761c924f341")
             ),
             Side.LEFT)
 
