@@ -6,7 +6,7 @@ import com.wavecollapse.business.Tile
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import test.kotlin.com.wavecollapse.fakeRepository.InMemoryImageRepository
+import com.wavecollapse.fakeRepository.InMemoryImageRepository
 import java.util.*
 
 class ImageServiceTest {

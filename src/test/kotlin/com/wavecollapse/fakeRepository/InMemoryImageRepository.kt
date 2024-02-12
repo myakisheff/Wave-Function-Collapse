@@ -1,4 +1,4 @@
-package test.kotlin.com.wavecollapse.fakeRepository
+package com.wavecollapse.fakeRepository
 
 import com.wavecollapse.business.Image
 import com.wavecollapse.persistence.repository.ImageRepository

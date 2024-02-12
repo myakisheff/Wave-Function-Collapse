@@ -5,7 +5,7 @@ import com.wavecollapse.presentation.model.TileViewModel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
-import test.kotlin.com.wavecollapse.fakeRepository.InMemoryTileRepository
+import com.wavecollapse.fakeRepository.InMemoryTileRepository
 import java.util.*
 
 internal class TileServiceTest {
