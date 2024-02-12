@@ -16,22 +16,47 @@ fun main() {
     // We need it because there fake repositories (not a DB)
     val imagesRep = ListImageRepository()
     val tilesRep = ListTileRepository()
+
     val imageController = ImageController(ImageService(imagesRep))
 
+    // create default tiles
     val tileIds = TileController(TileService(tilesRep)).addDefaultTiles()
+
+    // get created tiles
     val tiles = TileController(TileService(tilesRep)).getTiles(tileIds)
 
-    // create example image
-    val res = imageController
-        .create(ImageService(imagesRep).default(tiles))
+    var i = 0
+    do {
+        // create example image
+        val res = imageController
+            .create(ImageService(imagesRep).default(tiles, i))
 
-    if(res.first) kLogger.info { res.second }
-    else kLogger.error { res.second }
+        if(res.first) kLogger.info { res.second }
+        else kLogger.error { res.second }
 
-    println()
+        println()
 
-    imageController
-        .get(imageController.getByTag("Example")?.id.toString())
+        // show created image
+        imageController
+            .get(imageController.getByTag("Example$i")?.id.toString())
 
-    println("Generate again?")
+        i++
+
+        println("Generate again? [Y/N]")
+
+    }while (checkYN(readln()))
+
+}
+
+fun checkYN(message : String) : Boolean
+{
+    return when(message)
+    {
+        "Y" -> true
+        "N" -> false
+        else -> {
+            println("Print Y or N")
+            checkYN(readln())
+        }
+    }
 }
