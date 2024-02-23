@@ -38,7 +38,7 @@ fun main() {
 
         // show created image
         imageController
-            .get(imageController.getByTag("Example$i")?.id.toString())
+            .get(imageController.getByTag("Example")?.id.toString())
 
         i++
 

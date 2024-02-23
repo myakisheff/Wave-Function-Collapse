@@ -12,10 +12,10 @@ class ImageService(
     fun default(tiles : MutableIterable<Tile>, i : Int): Image {
         val img = Image(
             UUID.randomUUID(),
-            "Example$i",
+            "Example",
             tiles.toMutableList(),
-            15,
-            15
+            40,
+            50
         )
         // Add connections
         // ╠

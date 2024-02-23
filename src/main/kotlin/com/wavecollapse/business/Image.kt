@@ -1,6 +1,9 @@
 package com.wavecollapse.business
 
 import com.wavecollapse.kLogger
+import com.wavecollapse.persistence.repository.ListImageRepository
+import com.wavecollapse.presentation.controller.ImageController
+import com.wavecollapse.service.ImageService
 import java.util.UUID
 
 class Image(
